@@ -11,12 +11,16 @@ export const getCompostStage = (temperature) => {
      >55°C Termófila
      */
 
-    if (temperature < 40) {
+    if (30 < temperature < 40) {
         return "Mesófila";
     }
 
     if (temperature >= 40 && temperature < 55) {
         return "Termófila Moderada";
+    }
+
+    if (temperature < 30) {
+        return "Maduracion";
     }
 
     return "Termófila";
