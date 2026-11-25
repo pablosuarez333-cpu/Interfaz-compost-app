@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import LotStatus from "./LotStatus";
 
-function LotCard({ lot }) {
+function LotCard({ lot, onEdit, onDelete }) {
   return (
     <div
       style={{
@@ -31,15 +31,15 @@ function LotCard({ lot }) {
       <p>
         <strong>Tipo:</strong>
         {" "}
-        {lot.type}
+        {lot.type || "—"}
       </p>
 
       <p>
         <strong>Volumen:</strong>
         {" "}
-        {lot.volume}
-        {" "}
-        m³
+        {lot.volume === null
+          ? "—"
+          : `${lot.volume} m³`}
       </p>
 
       <p>
@@ -50,11 +50,37 @@ function LotCard({ lot }) {
 
       <p>{lot.description}</p>
 
-      <Link
-        to={`/lots/${lot.id}`}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          flexWrap: "wrap"
+        }}
       >
-        Ver detalle
-      </Link>
+        <Link
+          to={`/lots/${lot.id}`}
+        >
+          Ver detalle
+        </Link>
+
+        {onEdit && (
+          <button
+            onClick={() => onEdit(lot)}
+          >
+            Editar
+          </button>
+        )}
+
+        {onDelete && (
+          <button
+            onClick={() => onDelete(lot)}
+            style={{ color: "#b91c1c" }}
+          >
+            Eliminar
+          </button>
+        )}
+      </div>
     </div>
   );
 }

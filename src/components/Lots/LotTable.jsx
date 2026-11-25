@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 
 import LotStatus from "./LotStatus";
 
-function LotTable({ lots }) {
+function LotTable({ lots, onEdit, onDelete }) {
+  const hasActions = Boolean(onEdit || onDelete);
+
   return (
     <div
       style={{
@@ -26,6 +28,7 @@ function LotTable({ lots }) {
             <th>Estado</th>
             <th>Volumen</th>
             <th>Detalle</th>
+            {hasActions && <th>Acciones</th>}
           </tr>
         </thead>
 
@@ -34,7 +37,7 @@ function LotTable({ lots }) {
             <tr key={lot.id}>
               <td>{lot.name}</td>
 
-              <td>{lot.type}</td>
+              <td>{lot.type || "—"}</td>
 
               <td>
                 <LotStatus
@@ -43,9 +46,9 @@ function LotTable({ lots }) {
               </td>
 
               <td>
-                {lot.volume}
-                {" "}
-                m³
+                {lot.volume === null
+                  ? "—"
+                  : `${lot.volume} m³`}
               </td>
 
               <td>
@@ -55,6 +58,30 @@ function LotTable({ lots }) {
                   Abrir
                 </Link>
               </td>
+
+              {hasActions && (
+                <td>
+                  {onEdit && (
+                    <button
+                      onClick={() => onEdit(lot)}
+                    >
+                      Editar
+                    </button>
+                  )}
+
+                  {onDelete && (
+                    <button
+                      onClick={() => onDelete(lot)}
+                      style={{
+                        marginLeft: "8px",
+                        color: "#b91c1c"
+                      }}
+                    >
+                      Eliminar
+                    </button>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
