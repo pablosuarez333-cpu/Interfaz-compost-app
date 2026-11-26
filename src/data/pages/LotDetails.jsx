@@ -21,6 +21,10 @@ import {
 import LotActivities from "../components/Lots/LotActivities";
 import LotIncidents from "../components/Lots/LotIncidents";
 
+function formatTemp(value) {
+  return value === null || value === undefined ? "—" : `${value} °C`;
+}
+
 function LotDetails() {
   const { lotId } = useParams();
 
@@ -43,9 +47,6 @@ function LotDetails() {
         ),
       [measurements, lotId]
     );
-
-  const latestMeasurement =
-    lotMeasurements.at(-1);
 
   const temperatureData =
     getTemperatureSeries(
@@ -110,11 +111,12 @@ function LotDetails() {
           </h3>
 
           <p>
-            {getCurrentTemperature(
-              measurements,
-              lotId
+            {formatTemp(
+              getCurrentTemperature(
+                measurements,
+                lotId
+              )
             )}
-            °C
           </p>
         </div>
 
@@ -132,11 +134,12 @@ function LotDetails() {
           </h3>
 
           <p>
-            {getMaximumTemperature(
-              measurements,
-              lotId
+            {formatTemp(
+              getMaximumTemperature(
+                measurements,
+                lotId
+              )
             )}
-            °C
           </p>
         </div>
 
@@ -154,11 +157,12 @@ function LotDetails() {
           </h3>
 
           <p>
-            {getAverageTemperature(
-              measurements,
-              lotId
+            {formatTemp(
+              getAverageTemperature(
+                measurements,
+                lotId
+              )
             )}
-            °C
           </p>
         </div>
 
@@ -176,12 +180,7 @@ function LotDetails() {
           </h3>
 
           <p>
-            {latestMeasurement
-              ? determineStage(
-                  latestMeasurement.temperature,
-                  latestMeasurement.day
-                )
-              : "Sin datos"}
+            {determineStage(lotMeasurements)}
           </p>
         </div>
       </div>
